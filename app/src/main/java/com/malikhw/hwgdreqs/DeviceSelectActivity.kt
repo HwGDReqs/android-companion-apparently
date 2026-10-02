@@ -1,6 +1,7 @@
 package com.malikhw.hwgdreqs
 
 import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -64,7 +65,9 @@ class DeviceSelectActivity : ComponentActivity() {
                                 .putExtra(Extras.LOGIN, d.login)
                         )
                     },
-                    onRescan = vm::rescan,
+                    onHowToUse = {
+                        startActivity(Intent(Intent.ACTION_VIEW, Uri.parse("https://hwgdreqs.github.io/mobile")))
+                    },
                 )
             }
         }

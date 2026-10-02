@@ -44,11 +44,6 @@ class DeviceSelectViewModel(app: Application) : AndroidViewModel(app) {
         _autoConnected.value = null
     }
 
-    fun rescan() {
-        discovery.stop()
-        discovery.start()
-    }
-
     override fun onCleared() {
         discovery.stop()
     }

@@ -16,4 +16,8 @@ data class QueueEntry(
     val author: String,
     val requester: String,
     val details: List<Pair<String, String>>,
+    val difficulty: String,
+    val platform: String,
+    val badRequester: Boolean,
+    val badRequesterReason: String,
 )

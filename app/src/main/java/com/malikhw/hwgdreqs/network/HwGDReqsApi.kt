@@ -186,6 +186,10 @@ class HwGDReqsApi(private val prefs: AuthPreferences) {
                 author = o.optString("author"),
                 requester = o.optString("requester"),
                 details = details,
+                difficulty = o.optString("difficulty"),
+                platform = o.optString("platform"),
+                badRequester = o.optBoolean("bad_requester", false),
+                badRequesterReason = o.optString("bad_requester_reason"),
             )
         }
     }

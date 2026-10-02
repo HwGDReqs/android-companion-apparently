@@ -39,7 +39,7 @@ fun DeviceSelectScreen(
     devicesFlow: StateFlow<List<DiscoveredDevice>>,
     searchingFlow: StateFlow<Boolean>,
     onSelect: (DiscoveredDevice) -> Unit,
-    onRescan: () -> Unit,
+    onHowToUse: () -> Unit,
 ) {
     val devices by devicesFlow.collectAsStateWithLifecycle()
     val searching by searchingFlow.collectAsStateWithLifecycle()
@@ -73,12 +73,12 @@ fun DeviceSelectScreen(
             }
 
             FilledTonalButton(
-                onClick = onRescan,
+                onClick = onHowToUse,
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(16.dp),
             ) {
-                Text(stringResource(R.string.search_again))
+                Text(stringResource(R.string.how_to_use))
             }
         }
     }
