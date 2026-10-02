@@ -1,0 +1,37 @@
+<resources>
+    <string name="app_name">hwgdreqs mobile</string>
+
+    <!-- Device selection -->
+    <string name="select_device_title">Select a device</string>
+    <string name="searching">Searching your network…</string>
+    <string name="no_devices_title">No devices found yet</string>
+    <string name="no_devices_hint">Make sure HwGDReqs is running on your PC, \"Host to local network\" is enabled in its settings, and both devices are on the same Wi-Fi.</string>
+    <string name="search_again">Search again</string>
+    <string name="logged_in_as">Logged in as %1$s</string>
+    <string name="not_logged_in">No active login</string>
+    <string name="version_fmt">v%1$s</string>
+
+    <!-- Pairing -->
+    <string name="pair_title">Pair with PC</string>
+    <string name="found_fmt">Found %1$s</string>
+    <string name="pair_enter_code">Type this code on your PC:</string>
+    <string name="pair_waiting">Waiting for confirmation on PC…</string>
+    <string name="connecting">Connecting…</string>
+    <string name="pair_failed_title">Couldn\'t connect</string>
+    <string name="cancel">Cancel</string>
+    <string name="back">Back</string>
+    <string name="try_again">Try again</string>
+    <string name="err_declined">The pairing request was declined or timed out on the PC.</string>
+    <string name="err_invalid_pin">The code entered on the PC didn\'t match the one shown here.</string>
+    <string name="err_unavailable">The desktop app can\'t accept pairing right now.</string>
+    <string name="err_network">Couldn\'t reach the PC. Check that you\'re on the same network.</string>
+    <string name="err_generic">Something went wrong (%1$s).</string>
+
+    <!-- Queue -->
+    <string name="queue_title">Queue</string>
+    <string name="queue_subtitle_fmt">%1$d in queue · %2$s</string>
+    <string name="queue_empty">The queue is empty</string>
+    <string name="queue_connection_lost">Connection lost — retrying…</string>
+    <string name="queue_by_fmt">by %1$s</string>
+    <string name="queue_from_fmt">from %1$s</string>
+</resources>
