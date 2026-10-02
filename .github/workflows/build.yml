@@ -27,27 +27,10 @@ jobs:
           distribution: 'temurin'
 
       - name: Set up Gradle
-        uses: gradle/actions/setup-gradle@v3
+        uses: gradle/actions/setup-gradle@v4
 
-      - name: Ensure Gradle wrapper
-        run: |
-          if [ -f "./gradlew" ] && [ -f "./gradle/wrapper/gradle-wrapper.jar" ]; then
-            echo "Gradle wrapper found. Using existing wrapper."
-            chmod +x gradlew
-          else
-            echo "Gradle wrapper missing or incomplete. Generating wrapper..."
-            wget -q https://services.gradle.org/distributions/gradle-8.7-bin.zip -O /tmp/gradle-8.7-bin.zip
-            unzip -q /tmp/gradle-8.7-bin.zip -d /tmp/gradle
-            /tmp/gradle/gradle-8.7/bin/gradle wrapper --gradle-version 8.7 --distribution-type bin
-            chmod +x gradlew
-
-            echo "Committing and pushing Gradle wrapper..."
-            git config user.name "github-actions[bot]"
-            git config user.email "github-actions[bot]@users.noreply.github.com"
-            git add -f gradlew gradlew.bat gradle/wrapper/
-            git commit -m "Add Gradle wrapper" || true
-            git push origin HEAD:${{ github.ref }} || true
-          fi
+      - name: Make gradlew executable
+        run: chmod +x gradlew
 
       - name: Decode release keystore from secrets
         env:
