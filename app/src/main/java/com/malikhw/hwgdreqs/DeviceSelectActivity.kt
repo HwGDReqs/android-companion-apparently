@@ -12,6 +12,7 @@ import androidx.lifecycle.repeatOnLifecycle
 import com.malikhw.hwgdreqs.ui.DeviceSelectScreen
 import com.malikhw.hwgdreqs.ui.theme.HwGDReqsTheme
 import kotlinx.coroutines.awaitCancellation
+import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 
 class DeviceSelectActivity : ComponentActivity() {
@@ -24,6 +25,23 @@ class DeviceSelectActivity : ComponentActivity() {
         lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
                 vm.startScan()
+                launch {
+                    vm.devices.collect { devices ->
+                        devices.forEach(vm::checkForExistingPairing)
+                    }
+                }
+                launch {
+                    vm.autoConnected.collect { device ->
+                        if (device != null) {
+                            vm.consumeAutoConnected()
+                            startActivity(
+                                Intent(this@DeviceSelectActivity, MainActivity::class.java)
+                                    .putExtra(Extras.HOST, device.host)
+                                    .putExtra(Extras.PORT, device.port)
+                            )
+                        }
+                    }
+                }
                 try {
                     awaitCancellation()
                 } finally {

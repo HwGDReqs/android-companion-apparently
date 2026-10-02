@@ -1,6 +1,9 @@
 package com.malikhw.hwgdreqs
 
+import android.content.ClipData
+import android.content.ClipboardManager
 import android.os.Bundle
+import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
@@ -32,6 +35,16 @@ class MainActivity : ComponentActivity() {
                     state = state,
                     address = "${vm.host}:${vm.port}",
                     onUnauthorized = { finish() },
+                    onDevices = { finish() },
+                    onCopy = { levelId ->
+                        val clipboard = getSystemService(CLIPBOARD_SERVICE) as ClipboardManager
+                        clipboard.setPrimaryClip(ClipData.newPlainText("Level ID", levelId))
+                        Toast.makeText(this, R.string.level_id_copied, Toast.LENGTH_SHORT).show()
+                    },
+                    onDelete = vm::deleteEntry,
+                    onSubmitActionPassword = vm::submitActionPassword,
+                    onDismissAuthPrompt = vm::dismissAuthPrompt,
+                    onDismissActionError = vm::dismissActionError,
                 )
             }
         }

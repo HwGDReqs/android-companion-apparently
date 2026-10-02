@@ -1,11 +1,15 @@
 package com.malikhw.hwgdreqs.ui.theme
 
+import android.os.Build
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.darkColorScheme
+import androidx.compose.material3.dynamicDarkColorScheme
+import androidx.compose.material3.dynamicLightColorScheme
 import androidx.compose.material3.lightColorScheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 
 private val DarkColors = darkColorScheme(
     primary = Color(0xFF60A5FA),
@@ -29,9 +33,9 @@ private val LightColors = lightColorScheme(
     primaryContainer = Color(0xFFDBE7FF),
     onPrimaryContainer = Color(0xFF0B2A66),
     secondary = Color(0xFF475569),
-    background = Color(0xFFF8FAFC),
+    background = Color.White,
     onBackground = Color(0xFF0F172A),
-    surface = Color(0xFFF8FAFC),
+    surface = Color.White,
     onSurface = Color(0xFF0F172A),
     surfaceVariant = Color(0xFFE8EEF7),
     onSurfaceVariant = Color(0xFF475569),
@@ -44,8 +48,15 @@ fun HwGDReqsTheme(
     darkTheme: Boolean = isSystemInDarkTheme(),
     content: @Composable () -> Unit,
 ) {
+    val context = LocalContext.current
+    val colorScheme = when {
+        Build.VERSION.SDK_INT >= Build.VERSION_CODES.S && darkTheme -> dynamicDarkColorScheme(context)
+        Build.VERSION.SDK_INT >= Build.VERSION_CODES.S -> dynamicLightColorScheme(context)
+        darkTheme -> DarkColors
+        else -> LightColors
+    }
     MaterialTheme(
-        colorScheme = if (darkTheme) DarkColors else LightColors,
+        colorScheme = colorScheme,
         content = content,
     )
 }

@@ -15,4 +15,5 @@ data class QueueEntry(
     val name: String,
     val author: String,
     val requester: String,
+    val details: List<Pair<String, String>>,
 )

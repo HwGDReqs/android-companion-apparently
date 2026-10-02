@@ -31,7 +31,18 @@ class AuthPreferences(context: Context) {
         prefs.edit().remove(tokenKey(host)).apply()
     }
 
+    fun getActionPassword(host: String): String? = prefs.getString(actionPasswordKey(host), null)
+
+    fun setActionPassword(host: String, password: String) {
+        prefs.edit().putString(actionPasswordKey(host), password).apply()
+    }
+
+    fun clearActionPassword(host: String) {
+        prefs.edit().remove(actionPasswordKey(host)).apply()
+    }
+
     private fun tokenKey(host: String) = "token_$host"
+    private fun actionPasswordKey(host: String) = "action_password_$host"
 
     private companion object {
         const val KEY_DEVICE_ID = "device_id"

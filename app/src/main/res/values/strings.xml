@@ -34,4 +34,17 @@
     <string name="queue_connection_lost">Connection lost — retrying…</string>
     <string name="queue_by_fmt">by %1$s</string>
     <string name="queue_from_fmt">from %1$s</string>
+    <string name="devices">Devices</string>
+    <string name="copy_level_id">Copy ID</string>
+    <string name="delete_entry">X</string>
+    <string name="level_id_copied">Level ID copied</string>
+    <string name="queue_entry_details">Queue entry details</string>
+    <string name="close">Close</string>
+    <string name="action_auth_title">Action password</string>
+    <string name="wrong_password_title">Wrong Password</string>
+    <string name="action_auth_message">You have set a password for actions in the desktop app: please check it in the settings and type it here</string>
+    <string name="action_password_label">Password</string>
+    <string name="submit">Submit</string>
+    <string name="action_failed_title">Action failed</string>
+    <string name="ok">OK</string>
 </resources>

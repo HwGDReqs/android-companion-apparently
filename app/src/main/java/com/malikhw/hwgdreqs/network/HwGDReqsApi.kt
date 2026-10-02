@@ -97,22 +97,61 @@ class HwGDReqsApi(private val prefs: AuthPreferences) {
         }
     }
 
-    suspend fun getQueue(baseUrl: String, token: String?): Result<List<QueueEntry>> =
+    suspend fun getQueue(
+        baseUrl: String,
+        token: String?,
+        actionPassword: String?,
+    ): Result<List<QueueEntry>> =
         withContext(Dispatchers.IO) {
             safe {
                 val request = Request.Builder()
-                    .url("$baseUrl/queue")
+                    .url(
+                        Request.Builder().url("$baseUrl/queue").build().url.newBuilder()
+                            .apply { actionPassword?.let { addQueryParameter("auth", it) } }
+                            .build()
+                    )
                     .mobileHeaders(token)
                     .get()
                     .build()
 
                 pollClient.newCall(request).await().use { r ->
-                    if (r.code == 401) throw ApiException("unauthorized")
-                    if (!r.isSuccessful) throw ApiException("http_${r.code}")
-                    parseQueue(r.body?.string().orEmpty())
+                    val text = r.body?.string().orEmpty()
+                    if (!r.isSuccessful) {
+                        val error = parseObject(text).optString("error")
+                            .ifEmpty { if (r.code == 401) "unauthorized" else "http_${r.code}" }
+                        throw ApiException(error)
+                    }
+                    parseQueue(text)
                 }
             }
         }
+
+    suspend fun deleteLevel(
+        baseUrl: String,
+        token: String?,
+        levelId: String,
+        actionPassword: String?,
+    ): Result<Unit> = withContext(Dispatchers.IO) {
+        safe {
+            val body = JSONObject().put("id", levelId)
+            actionPassword?.let { body.put("auth", it) }
+            val request = Request.Builder()
+                .url("$baseUrl/delete")
+                .mobileHeaders(token)
+                .post(body.toString().toRequestBody(JSON))
+                .build()
+
+            client.newCall(request).await().use { r ->
+                val text = r.body?.string().orEmpty()
+                val json = parseObject(text)
+                if (!r.isSuccessful || !json.optBoolean("ok", false)) {
+                    val error = json.optString("error")
+                        .ifEmpty { "http_${r.code}" }
+                    throw ApiException(error)
+                }
+            }
+        }
+    }
 
 
     private fun Request.Builder.mobileHeaders(token: String?): Request.Builder = apply {
@@ -133,11 +172,20 @@ class HwGDReqsApi(private val prefs: AuthPreferences) {
         val arr = parseObject(text).optJSONArray("levels") ?: JSONArray()
         return List(arr.length()) { i ->
             val o = arr.optJSONObject(i) ?: JSONObject()
+            val details = buildList {
+                val keys = o.keys()
+                while (keys.hasNext()) {
+                    val key = keys.next()
+                    val value = o.opt(key)
+                    add(key to if (value == JSONObject.NULL) "" else value.toString())
+                }
+            }
             QueueEntry(
                 id = o.optString("id"),
                 name = o.optString("name"),
                 author = o.optString("author"),
                 requester = o.optString("requester"),
+                details = details,
             )
         }
     }
