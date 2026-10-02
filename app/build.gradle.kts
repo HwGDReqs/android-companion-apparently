@@ -11,7 +11,7 @@ android {
     defaultConfig {
         applicationId = "com.malikhw.hwgdreqs"
         minSdk = 24
-        targetSdk = 35
+        targetSdk = 36
         versionCode = 1
         versionName = "0.3.0"
     }
